@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Star, MapPin, Clock, MoreVertical } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface RestaurantCardProps {
   id: string;
@@ -16,6 +17,7 @@ interface RestaurantCardProps {
 }
 
 export function RestaurantCard({
+  id,
   name,
   cuisine,
   rating,
@@ -70,9 +72,11 @@ export function RestaurantCard({
         </div>
 
         <div className="flex space-x-2 mt-4">
-          <Button variant="outline" size="sm" className="flex-1">
-            View Details
-          </Button>
+          <Link to={`/restaurants/${id}/menu`} className="flex-1">
+            <Button variant="outline" size="sm" className="w-full">
+              View Menu
+            </Button>
+          </Link>
           <Button variant="default" size="sm" className="flex-1">
             Contact
           </Button>
