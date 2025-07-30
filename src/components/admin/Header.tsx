@@ -1,7 +1,8 @@
-import { Bell, Search, User } from "lucide-react";
+import { Bell, Search, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
 export function Header() {
   return (
@@ -37,12 +38,19 @@ export function Header() {
           </div>
 
           {/* Profile */}
-          <Button variant="ghost" className="flex items-center space-x-2 hover:bg-accent/10">
-            <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center">
-              <User className="w-4 h-4 text-white" />
-            </div>
-            <span className="font-medium">Admin</span>
-          </Button>
+          <div className="flex items-center space-x-2">
+            <Button variant="ghost" className="flex items-center space-x-2 hover:bg-accent/10">
+              <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center">
+                <User className="w-4 h-4 text-white" />
+              </div>
+              <span className="font-medium">Admin</span>
+            </Button>
+            <Link to="/admin/login">
+              <Button variant="ghost" size="icon" className="hover:bg-accent/10" title="Logout">
+                <LogOut className="w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </header>
