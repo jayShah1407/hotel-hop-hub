@@ -8,9 +8,6 @@ import { Input } from "@/components/ui/input";
 import { 
   ArrowLeft, 
   Search, 
-  Plus, 
-  Edit3, 
-  Trash2, 
   Star,
   Clock,
   DollarSign
@@ -102,10 +99,6 @@ export default function RestaurantMenu() {
               <p className="text-muted-foreground">{mockRestaurant.cuisine} • {mockRestaurant.location}</p>
             </div>
           </div>
-          <Button className="bg-gradient-primary hover:opacity-90">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Menu Item
-          </Button>
         </div>
 
         {/* Restaurant Info */}
@@ -168,17 +161,7 @@ export default function RestaurantMenu() {
               <CardContent className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-lg font-semibold text-foreground">{item.name}</h3>
-                      <div className="flex space-x-2">
-                        <Button variant="ghost" size="icon" className="hover:bg-accent/10">
-                          <Edit3 className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="hover:bg-destructive/10 hover:text-destructive">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">{item.name}</h3>
                     <p className="text-sm text-muted-foreground mb-3">{item.description}</p>
                     
                     <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-3">
