@@ -17,19 +17,19 @@ All colors MUST be HSL. Inspired by vibrant food delivery apps.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    /* Pink-to-red gradient theme from reference app */
-    --primary: 340 82% 52%;
+    /* Terracotta & White theme */
+    --primary: 16 70% 50%;
     --primary-foreground: 0 0% 100%;
-    --primary-light: 340 100% 70%;
-    --primary-dark: 4 90% 58%;
+    --primary-light: 16 85% 65%;
+    --primary-dark: 12 75% 40%;
 
-    --secondary: 340 15% 95%;
-    --secondary-foreground: 340 82% 52%;
+    --secondary: 16 20% 96%;
+    --secondary-foreground: 16 70% 50%;
 
-    --muted: 340 10% 96%;
-    --muted-foreground: 340 25% 45%;
+    --muted: 16 15% 96%;
+    --muted-foreground: 16 25% 45%;
 
-    --accent: 4 90% 58%;
+    --accent: 24 85% 52%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 16 70% 50%;
@@ -41,9 +41,9 @@ All colors MUST be HSL. Inspired by vibrant food delivery apps.
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
 
-    --border: 340 10% 90%;
-    --input: 340 10% 95%;
-    --ring: 340 82% 52%;
+    --border: 16 15% 90%;
+    --input: 16 15% 95%;
+    --ring: 16 70% 50%;
 
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
@@ -87,7 +87,7 @@ All colors MUST be HSL. Inspired by vibrant food delivery apps.
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
+    --primary: 16 70% 60%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
     --secondary: 217.2 32.6% 17.5%;
@@ -96,15 +96,15 @@ All colors MUST be HSL. Inspired by vibrant food delivery apps.
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 24 85% 55%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 16 60% 40%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 16 70% 50%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
