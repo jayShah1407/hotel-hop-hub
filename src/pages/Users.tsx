@@ -80,13 +80,13 @@ export default function Users() {
           <h2 className="sr-only">Leaderboard</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Gold */}
-            <Card className="hover:shadow-elegant transition-all duration-300">
+            <Card className="hover:shadow-elegant transition-all duration-300 border-l-4 border-l-yellow-500 bg-gradient-to-r from-yellow-50/50 to-transparent">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-warning/10">
-                    <Crown className="w-4 h-4 text-warning" />
+                  <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-yellow-500/10">
+                    <Crown className="w-4 h-4 text-yellow-600" />
                   </span>
-                  Gold
+                  <span className="sr-only">Gold Tier</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -102,13 +102,13 @@ export default function Users() {
             </Card>
 
             {/* Silver */}
-            <Card className="hover:shadow-elegant transition-all duration-300">
+            <Card className="hover:shadow-elegant transition-all duration-300 border-l-4 border-l-gray-400 bg-gradient-to-r from-gray-50/50 to-transparent">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-muted">
-                    <Medal className="w-4 h-4 text-foreground" />
+                  <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-gray-400/10">
+                    <Medal className="w-4 h-4 text-gray-500" />
                   </span>
-                  Silver
+                  <span className="sr-only">Silver Tier</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -124,13 +124,13 @@ export default function Users() {
             </Card>
 
             {/* Bronze */}
-            <Card className="hover:shadow-elegant transition-all duration-300">
+            <Card className="hover:shadow-elegant transition-all duration-300 border-l-4 border-l-amber-600 bg-gradient-to-r from-amber-50/50 to-transparent">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-accent/10">
-                    <Medal className="w-4 h-4 text-accent" />
+                  <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-amber-600/10">
+                    <Medal className="w-4 h-4 text-amber-700" />
                   </span>
-                  Bronze
+                  <span className="sr-only">Bronze Tier</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
