@@ -20,7 +20,7 @@ const navigation = [
   { name: "Orders", href: "/orders", icon: ShoppingBag },
   { name: "Users", href: "/users", icon: Users },
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
-  { name: "Settings", href: "/settings", icon: Settings },
+
 ];
 
 export function Sidebar() {
