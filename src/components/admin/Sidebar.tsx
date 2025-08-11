@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const navigation = [
-  { name: "Dashboard", href: "/", icon: LayoutDashboard },
+  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Restaurants", href: "/restaurants", icon: Store },
   { name: "Orders", href: "/orders", icon: ShoppingBag },
   { name: "Users", href: "/users", icon: Users },
