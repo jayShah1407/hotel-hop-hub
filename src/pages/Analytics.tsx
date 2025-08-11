@@ -10,52 +10,52 @@ const restaurantAnalytics = [
     name: "Pizza Palace",
     cuisine: "Italian",
     data: [
-      { day: "Monday", orders: 45 },
-      { day: "Tuesday", orders: 52 },
-      { day: "Wednesday", orders: 38 },
-      { day: "Thursday", orders: 61 },
-      { day: "Friday", orders: 73 },
-      { day: "Saturday", orders: 89 },
-      { day: "Sunday", orders: 67 }
+      { day: "Mon", orders: 45 },
+      { day: "Tue", orders: 52 },
+      { day: "Wed", orders: 38 },
+      { day: "Thu", orders: 61 },
+      { day: "Fri", orders: 73 },
+      { day: "Sat", orders: 89 },
+      { day: "Sun", orders: 67 }
     ]
   },
   {
     name: "Burger Barn",
     cuisine: "American",
     data: [
-      { day: "Monday", orders: 32 },
-      { day: "Tuesday", orders: 41 },
-      { day: "Wednesday", orders: 29 },
-      { day: "Thursday", orders: 48 },
-      { day: "Friday", orders: 65 },
-      { day: "Saturday", orders: 78 },
-      { day: "Sunday", orders: 54 }
+      { day: "Mon", orders: 32 },
+      { day: "Tue", orders: 41 },
+      { day: "Wed", orders: 29 },
+      { day: "Thu", orders: 48 },
+      { day: "Fri", orders: 65 },
+      { day: "Sat", orders: 78 },
+      { day: "Sun", orders: 54 }
     ]
   },
   {
     name: "Sushi Zen",
     cuisine: "Japanese",
     data: [
-      { day: "Monday", orders: 28 },
-      { day: "Tuesday", orders: 34 },
-      { day: "Wednesday", orders: 31 },
-      { day: "Thursday", orders: 42 },
-      { day: "Friday", orders: 58 },
-      { day: "Saturday", orders: 71 },
-      { day: "Sunday", orders: 49 }
+      { day: "Mon", orders: 28 },
+      { day: "Tue", orders: 34 },
+      { day: "Wed", orders: 31 },
+      { day: "Thu", orders: 42 },
+      { day: "Fri", orders: 58 },
+      { day: "Sat", orders: 71 },
+      { day: "Sun", orders: 49 }
     ]
   },
   {
     name: "Taco Fiesta",
     cuisine: "Mexican",
     data: [
-      { day: "Monday", orders: 38 },
-      { day: "Tuesday", orders: 44 },
-      { day: "Wednesday", orders: 35 },
-      { day: "Thursday", orders: 51 },
-      { day: "Friday", orders: 69 },
-      { day: "Saturday", orders: 82 },
-      { day: "Sunday", orders: 61 }
+      { day: "Mon", orders: 38 },
+      { day: "Tue", orders: 44 },
+      { day: "Wed", orders: 35 },
+      { day: "Thu", orders: 51 },
+      { day: "Fri", orders: 69 },
+      { day: "Sat", orders: 82 },
+      { day: "Sun", orders: 61 }
     ]
   }
 ];
