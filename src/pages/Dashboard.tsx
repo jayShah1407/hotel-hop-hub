@@ -1,3 +1,4 @@
+import { Layout } from "@/components/admin/Layout";
 import { StatsCard } from "@/components/admin/StatsCard";
 import { OrdersTable } from "@/components/admin/OrdersTable";
 import { RestaurantCard } from "@/components/admin/RestaurantCard";
@@ -69,6 +70,7 @@ const topRestaurants = [
 
 export default function Dashboard() {
   return (
+    <Layout>
     <div className="p-6 space-y-6 animate-fade-in">
       {/* Welcome Section */}
       <div className="bg-gradient-hero rounded-2xl p-8 text-white">
@@ -118,5 +120,6 @@ export default function Dashboard() {
         </div>
       </div>
     </div>
+    </Layout>
   );
 }
