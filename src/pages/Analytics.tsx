@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Layout } from "@/components/admin/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
@@ -81,7 +82,8 @@ export default function Analytics() {
   const selectedHotelData = restaurantAnalytics.find(hotel => hotel.name === selectedHotel);
 
   return (
-    <div className="space-y-6">
+    <Layout>
+      <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
         <p className="text-muted-foreground">
@@ -142,5 +144,6 @@ export default function Analytics() {
         </Card>
       )}
     </div>
+    </Layout>
   );
 }
