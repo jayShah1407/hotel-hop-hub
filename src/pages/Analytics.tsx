@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { Layout } from "@/components/admin/Layout";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
 
@@ -68,61 +68,79 @@ const chartConfig = {
 };
 
 export default function Analytics() {
+  const [selectedHotel, setSelectedHotel] = useState<string>(restaurantAnalytics[0].name);
+
   useEffect(() => {
-    document.title = "Analytics - Restaurant Dashboard";
+    document.title = "Analytics - 92 eats Admin";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'View daily order analytics and performance metrics for all restaurants in the delivery network.');
+      metaDescription.setAttribute('content', 'View daily order analytics and performance metrics for hotels in the 92 eats network.');
     }
   }, []);
 
-  return (
-    <Layout>
-      <div className="p-6 space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
-          <p className="text-muted-foreground">
-            Daily order analytics for each restaurant
-          </p>
-        </div>
+  const selectedHotelData = restaurantAnalytics.find(hotel => hotel.name === selectedHotel);
 
-        <div className="grid gap-6">
-          {restaurantAnalytics.map((restaurant) => (
-            <Card key={restaurant.name}>
-              <CardHeader>
-                <CardTitle>{restaurant.name}</CardTitle>
-                <CardDescription>
-                  {restaurant.cuisine} cuisine - Daily order trends
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ChartContainer config={chartConfig} className="h-[300px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={restaurant.data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                      <XAxis 
-                        dataKey="day" 
-                        stroke="hsl(var(--muted-foreground))"
-                        fontSize={12}
-                      />
-                      <YAxis 
-                        stroke="hsl(var(--muted-foreground))"
-                        fontSize={12}
-                      />
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                      <Bar 
-                        dataKey="orders" 
-                        fill="hsl(var(--primary))" 
-                        radius={[4, 4, 0, 0]}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
+        <p className="text-muted-foreground">
+          Daily order analytics for each hotel
+        </p>
       </div>
-    </Layout>
+
+      <div className="flex items-center space-x-4">
+        <label htmlFor="hotel-select" className="text-sm font-medium">
+          Select Hotel:
+        </label>
+        <Select value={selectedHotel} onValueChange={setSelectedHotel}>
+          <SelectTrigger className="w-64">
+            <SelectValue placeholder="Choose a hotel" />
+          </SelectTrigger>
+          <SelectContent className="bg-background border border-border shadow-lg z-50">
+            {restaurantAnalytics.map((hotel) => (
+              <SelectItem key={hotel.name} value={hotel.name}>
+                {hotel.name} - {hotel.cuisine}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {selectedHotelData && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">{selectedHotelData.name}</CardTitle>
+            <CardDescription className="text-base">
+              {selectedHotelData.cuisine} cuisine - Daily order trends
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={chartConfig} className="h-[500px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={selectedHotelData.data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis 
+                    dataKey="day" 
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={14}
+                  />
+                  <YAxis 
+                    stroke="hsl(var(--muted-foreground))"
+                    fontSize={14}
+                  />
+                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <Bar 
+                    dataKey="orders" 
+                    fill="hsl(var(--primary))" 
+                    radius={[6, 6, 0, 0]}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+      )}
+    </div>
   );
 }
