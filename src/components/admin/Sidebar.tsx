@@ -45,7 +45,7 @@ export function Sidebar() {
                 <ChefHat className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-foreground">DeliveryHub</h1>
+                <h1 className="text-lg font-bold text-foreground">92 eats</h1>
                 <p className="text-xs text-muted-foreground">Admin Panel</p>
               </div>
             </div>
@@ -87,7 +87,7 @@ export function Sidebar() {
       <div className="p-4 border-t border-border">
         {!collapsed && (
           <div className="text-xs text-muted-foreground text-center">
-            © 2024 DeliveryHub
+            © 2024 92 eats
           </div>
         )}
       </div>

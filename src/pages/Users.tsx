@@ -34,7 +34,7 @@ const CANCEL_THRESHOLD = 3;
 export default function Users() {
   // SEO
   useEffect(() => {
-    document.title = "Users Leaderboard | DeliveryHub Admin";
+    document.title = "Users Leaderboard | 92 eats Admin";
     const desc = "Top users by restaurant, high cancellation users, and global gold/silver/bronze leaderboard.";
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) {

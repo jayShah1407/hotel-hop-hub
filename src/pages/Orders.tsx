@@ -25,7 +25,7 @@ const mockOrders = [
 export default function Orders() {
   // SEO
   useEffect(() => {
-    document.title = "Orders Overview | DeliveryHub Admin";
+    document.title = "Orders Overview | 92 eats Admin";
     const desc = "Orders overview by hotel: totals, successful and canceled orders with canceler names.";
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) {
