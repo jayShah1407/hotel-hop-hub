@@ -1,7 +1,7 @@
 import { StatsCard } from "@/components/admin/StatsCard";
 import { OrdersTable } from "@/components/admin/OrdersTable";
 import { RestaurantCard } from "@/components/admin/RestaurantCard";
-import { Store, ShoppingBag, Users, DollarSign, TrendingUp } from "lucide-react";
+import { Store, ShoppingBag, Users, PoundSterling, TrendingUp } from "lucide-react";
 
 const stats = [
   {
@@ -12,9 +12,9 @@ const stats = [
     icon: Store,
   },
   {
-    title: "Active Orders",
-    value: "126",
-    change: "+8% from yesterday",
+    title: "Total Orders",
+    value: "1,284",
+    change: "+15% from last month",
     changeType: "positive" as const,
     icon: ShoppingBag,
   },
@@ -27,10 +27,17 @@ const stats = [
   },
   {
     title: "Revenue Today",
-    value: "$12,450",
+    value: "£12,450",
     change: "+18% from yesterday",
     changeType: "positive" as const,
-    icon: DollarSign,
+    icon: PoundSterling,
+  },
+  {
+    title: "Total Revenue",
+    value: "£145,230",
+    change: "+32% from last month",
+    changeType: "positive" as const,
+    icon: PoundSterling,
   },
 ];
 
@@ -43,7 +50,7 @@ const topRestaurants = [
     location: "Downtown",
     status: "active" as const,
     orders: 24,
-    revenue: "$1,245",
+    revenue: "£1,245",
   },
   {
     id: "2",
@@ -53,7 +60,7 @@ const topRestaurants = [
     location: "Midtown",
     status: "active" as const,
     orders: 18,
-    revenue: "$987",
+    revenue: "£987",
   },
   {
     id: "3",
@@ -63,7 +70,7 @@ const topRestaurants = [
     location: "Uptown",
     status: "pending" as const,
     orders: 12,
-    revenue: "$756",
+    revenue: "£756",
   },
 ];
 
@@ -86,7 +93,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         {stats.map((stat, index) => (
           <div key={stat.title} className="animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
             <StatsCard {...stat} />
