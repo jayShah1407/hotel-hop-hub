@@ -82,8 +82,19 @@ export default function Restaurants() {
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [selectedCuisine, setSelectedCuisine] = useState("all");
   const [minRating, setMinRating] = useState(0);
+  const [restaurants, setRestaurants] = useState(mockRestaurants);
 
-  const filteredRestaurants = mockRestaurants.filter(restaurant => {
+  const handleStatusChange = (id: string, newStatus: "active" | "inactive" | "pending") => {
+    setRestaurants(prev => 
+      prev.map(restaurant => 
+        restaurant.id === id 
+          ? { ...restaurant, status: newStatus }
+          : restaurant
+      )
+    );
+  };
+
+  const filteredRestaurants = restaurants.filter(restaurant => {
     const matchesSearch = restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          restaurant.cuisine.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = selectedStatus === "all" || restaurant.status === selectedStatus;
@@ -92,7 +103,7 @@ export default function Restaurants() {
     return matchesSearch && matchesStatus && matchesCuisine && matchesRating;
   });
 
-  const cuisineTypes = [...new Set(mockRestaurants.map(r => r.cuisine))];
+  const cuisineTypes = [...new Set(restaurants.map(r => r.cuisine))];
 
   return (
     <Layout>
@@ -103,7 +114,7 @@ export default function Restaurants() {
             <h1 className="text-3xl font-bold text-foreground">Restaurants</h1>
             <p className="text-muted-foreground">Manage restaurant partners and their menus</p>
           </div>
-          <Button className="bg-gradient-primary hover:opacity-90">
+          <Button className="bg-gradient-primary hover:opacity-90 btn-interactive">
             <Plus className="w-4 h-4 mr-2" />
             Add Restaurant
           </Button>
@@ -117,13 +128,13 @@ export default function Restaurants() {
               placeholder="Search restaurants..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className="pl-10 hover-border-smooth"
             />
           </div>
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="px-3 py-2 border border-border rounded-md bg-background text-foreground"
+            className="px-3 py-2 border border-border rounded-md bg-background text-foreground hover-border-smooth"
           >
             <option value="all">All Status</option>
             <option value="active">Active</option>
@@ -132,7 +143,7 @@ export default function Restaurants() {
           </select>
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="outline">
+              <Button variant="outline" className="hover-border-smooth btn-interactive">
                 <Filter className="w-4 h-4 mr-2" />
                 More Filters
                 {(selectedCuisine !== "all" || minRating > 0) && (
@@ -149,7 +160,7 @@ export default function Restaurants() {
                   <select
                     value={selectedCuisine}
                     onChange={(e) => setSelectedCuisine(e.target.value)}
-                    className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground"
+                    className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground hover-border-smooth"
                   >
                     <option value="all">All Cuisines</option>
                     {cuisineTypes.map(cuisine => (
@@ -181,7 +192,7 @@ export default function Restaurants() {
                       setSelectedCuisine("all");
                       setMinRating(0);
                     }}
-                    className="flex-1"
+                    className="flex-1 btn-interactive"
                   >
                     Clear Filters
                   </Button>
@@ -193,28 +204,28 @@ export default function Restaurants() {
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-card border border-border rounded-lg p-4">
+          <div className="bg-card border border-border rounded-lg p-4 card-hover">
             <p className="text-sm text-muted-foreground">Total Restaurants</p>
-            <p className="text-2xl font-bold text-foreground">{mockRestaurants.length}</p>
+            <p className="text-2xl font-bold text-foreground">{restaurants.length}</p>
           </div>
-          <div className="bg-card border border-border rounded-lg p-4">
+          <div className="bg-card border border-border rounded-lg p-4 card-hover">
             <p className="text-sm text-muted-foreground">Active</p>
-            <p className="text-2xl font-bold text-success">{mockRestaurants.filter(r => r.status === 'active').length}</p>
+            <p className="text-2xl font-bold text-success">{restaurants.filter(r => r.status === 'active').length}</p>
           </div>
-          <div className="bg-card border border-border rounded-lg p-4">
+          <div className="bg-card border border-border rounded-lg p-4 card-hover">
             <p className="text-sm text-muted-foreground">Pending</p>
-            <p className="text-2xl font-bold text-warning">{mockRestaurants.filter(r => r.status === 'pending').length}</p>
+            <p className="text-2xl font-bold text-warning">{restaurants.filter(r => r.status === 'pending').length}</p>
           </div>
-          <div className="bg-card border border-border rounded-lg p-4">
+          <div className="bg-card border border-border rounded-lg p-4 card-hover">
             <p className="text-sm text-muted-foreground">Inactive</p>
-            <p className="text-2xl font-bold text-destructive">{mockRestaurants.filter(r => r.status === 'inactive').length}</p>
+            <p className="text-2xl font-bold text-destructive">{restaurants.filter(r => r.status === 'inactive').length}</p>
           </div>
         </div>
 
         {/* Restaurant Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {filteredRestaurants.map((restaurant) => (
-            <RestaurantCard key={restaurant.id} {...restaurant} />
+            <RestaurantCard key={restaurant.id} {...restaurant} onStatusChange={handleStatusChange} />
           ))}
         </div>
 

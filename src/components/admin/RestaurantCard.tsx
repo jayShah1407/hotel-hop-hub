@@ -2,7 +2,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Star, MapPin, Clock, MoreVertical, Phone } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Star, MapPin, Clock, MoreVertical, Phone, Ban, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface RestaurantCardProps {
@@ -26,13 +27,31 @@ export function RestaurantCard({
   status,
   orders,
   revenue,
-}: RestaurantCardProps) {
+  onStatusChange,
+}: RestaurantCardProps & { onStatusChange?: (id: string, newStatus: "active" | "inactive" | "pending") => void }) {
   const { toast } = useToast();
 
   const handleContact = () => {
     toast({
       title: "Contacting Restaurant",
       description: `Initiating contact with ${name}...`,
+    });
+  };
+
+  const handleStatusChange = (newStatus: "active" | "inactive" | "pending") => {
+    onStatusChange?.(id, newStatus);
+    toast({
+      title: "Status Updated",
+      description: `${name} status changed to ${newStatus}`,
+    });
+  };
+
+  const handleBlacklist = () => {
+    onStatusChange?.(id, "inactive");
+    toast({
+      title: "Restaurant Blacklisted",
+      description: `${name} has been blacklisted and deactivated`,
+      variant: "destructive",
     });
   };
   const statusColors = {
@@ -42,15 +61,52 @@ export function RestaurantCard({
   };
 
   return (
-    <Card className="hover:shadow-elegant transition-all duration-300 border-border/50">
+    <Card className="card-hover border-border/50">
       <CardContent className="p-6">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-lg font-semibold text-foreground">{name}</h3>
-              <Button variant="ghost" size="icon" className="hover:bg-accent/10">
-                <MoreVertical className="w-4 h-4" />
-              </Button>
+              <h3 className="text-lg font-semibold text-foreground hover-text-smooth">{name}</h3>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="hover-bg-smooth">
+                    <MoreVertical className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48 bg-background border border-border shadow-lg">
+                  <DropdownMenuItem 
+                    onClick={() => handleStatusChange("active")}
+                    className="hover-bg-smooth cursor-pointer"
+                    disabled={status === "active"}
+                  >
+                    <CheckCircle className="w-4 h-4 mr-2 text-success" />
+                    Activate
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    onClick={() => handleStatusChange("pending")}
+                    className="hover-bg-smooth cursor-pointer"
+                    disabled={status === "pending"}
+                  >
+                    <AlertTriangle className="w-4 h-4 mr-2 text-warning" />
+                    Set Pending
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    onClick={() => handleStatusChange("inactive")}
+                    className="hover-bg-smooth cursor-pointer"
+                    disabled={status === "inactive"}
+                  >
+                    <XCircle className="w-4 h-4 mr-2 text-muted-foreground" />
+                    Deactivate
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    onClick={handleBlacklist}
+                    className="hover:bg-destructive/10 hover:text-destructive cursor-pointer"
+                  >
+                    <Ban className="w-4 h-4 mr-2 text-destructive" />
+                    Blacklist
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
             <p className="text-sm text-muted-foreground mb-2">{cuisine}</p>
             <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-3">
@@ -82,11 +138,11 @@ export function RestaurantCard({
 
         <div className="flex space-x-2 mt-4">
           <Link to={`/restaurants/${id}/menu`} className="flex-1">
-            <Button variant="outline" size="sm" className="w-full">
+            <Button variant="outline" size="sm" className="w-full btn-interactive hover-border-smooth">
               View Menu
             </Button>
           </Link>
-          <Button variant="default" size="sm" className="flex-1" onClick={handleContact}>
+          <Button variant="default" size="sm" className="flex-1 btn-interactive" onClick={handleContact}>
             <Phone className="w-4 h-4 mr-1" />
             Contact
           </Button>

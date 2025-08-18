@@ -125,3 +125,54 @@ All colors MUST be HSL. Inspired by vibrant food delivery apps.
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  /* Enhanced Hover Effects */
+  .hover-lift {
+    @apply transition-all duration-300 ease-out hover:transform hover:-translate-y-1 hover:shadow-elegant;
+  }
+  
+  .hover-scale {
+    @apply transition-transform duration-200 ease-out hover:scale-105;
+  }
+  
+  .hover-glow {
+    @apply transition-all duration-300 ease-out hover:shadow-primary hover:shadow-lg;
+  }
+  
+  .hover-slide {
+    @apply relative overflow-hidden transition-all duration-300 ease-out;
+  }
+  
+  .hover-slide::before {
+    @apply absolute inset-0 bg-gradient-primary opacity-0 transition-opacity duration-300 ease-out;
+    content: '';
+    z-index: -1;
+  }
+  
+  .hover-slide:hover::before {
+    @apply opacity-10;
+  }
+  
+  .hover-bg-smooth {
+    @apply transition-colors duration-300 ease-out hover:bg-accent/20;
+  }
+  
+  .hover-text-smooth {
+    @apply transition-colors duration-300 ease-out hover:text-primary;
+  }
+  
+  .hover-border-smooth {
+    @apply transition-all duration-300 ease-out hover:border-primary/50;
+  }
+  
+  /* Interactive Button States */
+  .btn-interactive {
+    @apply transition-all duration-200 ease-out hover:scale-105 active:scale-95 hover:shadow-md;
+  }
+  
+  /* Card hover states */
+  .card-hover {
+    @apply transition-all duration-300 ease-out hover:shadow-elegant hover:border-primary/20 hover:-translate-y-1;
+  }
+}

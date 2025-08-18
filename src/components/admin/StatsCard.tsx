@@ -17,7 +17,7 @@ export function StatsCard({ title, value, change, changeType, icon: Icon }: Stat
   };
 
   return (
-    <Card className="hover:shadow-elegant transition-all duration-300 border-border/50">
+    <Card className="card-hover border-border/50">
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="space-y-2">

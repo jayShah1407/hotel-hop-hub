@@ -133,7 +133,7 @@ export function OrdersTable() {
           </TableHeader>
           <TableBody>
             {orders.map((order) => (
-              <TableRow key={order.id} className="border-border/50 hover:bg-muted/30">
+              <TableRow key={order.id} className="border-border/50 hover-bg-smooth">
                 <TableCell className="font-medium text-primary">{order.id}</TableCell>
                 <TableCell>{order.customer}</TableCell>
                 <TableCell>{order.restaurant}</TableCell>
@@ -154,7 +154,7 @@ export function OrdersTable() {
                 </TableCell>
                 <TableCell className="text-muted-foreground">{order.time}</TableCell>
                 <TableCell>
-                  <Button variant="ghost" size="icon" className="hover:bg-accent/10">
+                  <Button variant="ghost" size="icon" className="btn-interactive">
                     <Eye className="w-4 h-4" />
                   </Button>
                 </TableCell>
