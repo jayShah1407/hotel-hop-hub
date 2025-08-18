@@ -1,7 +1,8 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Star, MapPin, Clock, MoreVertical } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { Star, MapPin, Clock, MoreVertical, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface RestaurantCardProps {
@@ -26,6 +27,14 @@ export function RestaurantCard({
   orders,
   revenue,
 }: RestaurantCardProps) {
+  const { toast } = useToast();
+
+  const handleContact = () => {
+    toast({
+      title: "Contacting Restaurant",
+      description: `Initiating contact with ${name}...`,
+    });
+  };
   const statusColors = {
     active: "bg-success/10 text-success border-success/20",
     inactive: "bg-destructive/10 text-destructive border-destructive/20",
@@ -77,7 +86,8 @@ export function RestaurantCard({
               View Menu
             </Button>
           </Link>
-          <Button variant="default" size="sm" className="flex-1">
+          <Button variant="default" size="sm" className="flex-1" onClick={handleContact}>
+            <Phone className="w-4 h-4 mr-1" />
             Contact
           </Button>
         </div>

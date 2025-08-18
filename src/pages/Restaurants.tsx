@@ -3,7 +3,9 @@ import { Layout } from "@/components/admin/Layout";
 import { RestaurantCard } from "@/components/admin/RestaurantCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Plus, Filter } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Search, Plus, Filter, Calendar, Star, MapPin } from "lucide-react";
 
 // Mock data - replace with Supabase data
 const mockRestaurants = [
@@ -15,7 +17,7 @@ const mockRestaurants = [
     location: "Downtown",
     status: "active" as const,
     orders: 45,
-    revenue: "$2,340",
+    revenue: "£2,340",
     image: "/placeholder.svg"
   },
   {
@@ -26,7 +28,7 @@ const mockRestaurants = [
     location: "Mall Area",
     status: "active" as const,
     orders: 32,
-    revenue: "$1,890",
+    revenue: "£1,890",
     image: "/placeholder.svg"
   },
   {
@@ -37,7 +39,7 @@ const mockRestaurants = [
     location: "Business District",
     status: "pending" as const,
     orders: 0,
-    revenue: "$0",
+    revenue: "£0",
     image: "/placeholder.svg"
   },
   {
@@ -48,7 +50,7 @@ const mockRestaurants = [
     location: "University Area",
     status: "active" as const,
     orders: 28,
-    revenue: "$1,560",
+    revenue: "£1,560",
     image: "/placeholder.svg"
   },
   {
@@ -59,7 +61,7 @@ const mockRestaurants = [
     location: "Tech Park",
     status: "inactive" as const,
     orders: 0,
-    revenue: "$0",
+    revenue: "£0",
     image: "/placeholder.svg"
   },
   {
@@ -70,7 +72,7 @@ const mockRestaurants = [
     location: "Old Town",
     status: "active" as const,
     orders: 19,
-    revenue: "$1,250",
+    revenue: "£1,250",
     image: "/placeholder.svg"
   }
 ];
@@ -78,13 +80,19 @@ const mockRestaurants = [
 export default function Restaurants() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("all");
+  const [selectedCuisine, setSelectedCuisine] = useState("all");
+  const [minRating, setMinRating] = useState(0);
 
   const filteredRestaurants = mockRestaurants.filter(restaurant => {
     const matchesSearch = restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          restaurant.cuisine.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = selectedStatus === "all" || restaurant.status === selectedStatus;
-    return matchesSearch && matchesStatus;
+    const matchesCuisine = selectedCuisine === "all" || restaurant.cuisine === selectedCuisine;
+    const matchesRating = restaurant.rating >= minRating;
+    return matchesSearch && matchesStatus && matchesCuisine && matchesRating;
   });
+
+  const cuisineTypes = [...new Set(mockRestaurants.map(r => r.cuisine))];
 
   return (
     <Layout>
@@ -122,10 +130,65 @@ export default function Restaurants() {
             <option value="pending">Pending</option>
             <option value="inactive">Inactive</option>
           </select>
-          <Button variant="outline">
-            <Filter className="w-4 h-4 mr-2" />
-            More Filters
-          </Button>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline">
+                <Filter className="w-4 h-4 mr-2" />
+                More Filters
+                {(selectedCuisine !== "all" || minRating > 0) && (
+                  <Badge variant="secondary" className="ml-2 px-1 py-0 text-xs">
+                    {[selectedCuisine !== "all" && "Cuisine", minRating > 0 && "Rating"].filter(Boolean).length}
+                  </Badge>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80">
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Cuisine Type</label>
+                  <select
+                    value={selectedCuisine}
+                    onChange={(e) => setSelectedCuisine(e.target.value)}
+                    className="w-full px-3 py-2 border border-border rounded-md bg-background text-foreground"
+                  >
+                    <option value="all">All Cuisines</option>
+                    {cuisineTypes.map(cuisine => (
+                      <option key={cuisine} value={cuisine}>{cuisine}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Minimum Rating</label>
+                  <div className="flex items-center space-x-2">
+                    <Star className="w-4 h-4 text-warning" />
+                    <input
+                      type="range"
+                      min="0"
+                      max="5"
+                      step="0.1"
+                      value={minRating}
+                      onChange={(e) => setMinRating(parseFloat(e.target.value))}
+                      className="flex-1"
+                    />
+                    <span className="text-sm font-medium w-8">{minRating.toFixed(1)}</span>
+                  </div>
+                </div>
+                <div className="flex space-x-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => {
+                      setSelectedCuisine("all");
+                      setMinRating(0);
+                    }}
+                    className="flex-1"
+                  >
+                    Clear Filters
+                  </Button>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
 
         {/* Stats */}

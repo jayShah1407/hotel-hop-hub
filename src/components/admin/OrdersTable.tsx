@@ -16,7 +16,7 @@ const orders = [
     id: "#ORD-001",
     customer: "John Doe",
     restaurant: "Pizza Palace",
-    amount: "$24.99",
+    amount: "£24.99",
     status: "delivered",
     time: "2 hours ago",
     location: "Downtown"
@@ -25,7 +25,7 @@ const orders = [
     id: "#ORD-002",
     customer: "Jane Smith",
     restaurant: "Burger Hub",
-    amount: "$18.50",
+    amount: "£18.50",
     status: "preparing",
     time: "15 minutes ago",
     location: "Midtown"
@@ -34,7 +34,7 @@ const orders = [
     id: "#ORD-003",
     customer: "Mike Johnson",
     restaurant: "Sushi Master",
-    amount: "$45.00",
+    amount: "£45.00",
     status: "in_transit",
     time: "30 minutes ago",
     location: "Uptown"
@@ -43,9 +43,63 @@ const orders = [
     id: "#ORD-004",
     customer: "Sarah Wilson",
     restaurant: "Taco Fiesta",
-    amount: "$12.75",
+    amount: "£12.75",
     status: "pending",
     time: "5 minutes ago",
+    location: "Westside"
+  },
+  {
+    id: "#ORD-005",
+    customer: "David Brown",
+    restaurant: "Mediterranean Delight",
+    amount: "£32.40",
+    status: "delivered",
+    time: "1 hour ago",
+    location: "Old Town"
+  },
+  {
+    id: "#ORD-006",
+    customer: "Emma Davis",
+    restaurant: "Curry House",
+    amount: "£28.90",
+    status: "preparing",
+    time: "45 minutes ago",
+    location: "Tech Park"
+  },
+  {
+    id: "#ORD-007",
+    customer: "Robert Miller",
+    restaurant: "Pizza Palace",
+    amount: "£19.99",
+    status: "in_transit",
+    time: "20 minutes ago",
+    location: "Downtown"
+  },
+  {
+    id: "#ORD-008",
+    customer: "Lisa Anderson",
+    restaurant: "Sushi Master",
+    amount: "£67.50",
+    status: "delivered",
+    time: "3 hours ago",
+    location: "Uptown"
+  },
+  {
+    id: "#ORD-009",
+    customer: "Mark Taylor",
+    restaurant: "Burger Hub",
+    amount: "£22.30",
+    status: "pending",
+    time: "10 minutes ago",
+    location: "Midtown"
+  },
+  {
+    id: "#ORD-010",
+    customer: "Jessica White",
+    restaurant: "Taco Fiesta",
+    amount: "£15.80",
+    status: "preparing",
+    time: "25 minutes ago",
     location: "Westside"
   },
 ];

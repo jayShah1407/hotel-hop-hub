@@ -10,7 +10,7 @@ import {
   Search, 
   Star,
   Clock,
-  DollarSign
+  PoundSterling
 } from "lucide-react";
 
 // Mock menu data - replace with Supabase data
@@ -166,8 +166,8 @@ export default function RestaurantMenu() {
                     
                     <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-3">
                       <div className="flex items-center space-x-1">
-                        <DollarSign className="w-4 h-4" />
-                        <span className="font-semibold text-primary">${item.price}</span>
+                        <PoundSterling className="w-4 h-4" />
+                        <span className="font-semibold text-primary">£{item.price}</span>
                       </div>
                       <div className="flex items-center space-x-1">
                         <Clock className="w-4 h-4" />
