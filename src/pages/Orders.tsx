@@ -1,8 +1,9 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Layout } from "@/components/admin/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, ShoppingBag, Building2 } from "lucide-react";
+import { OrdersModal } from "@/components/admin/OrdersModal";
 
 // Mock orders data grouped by restaurant (hotel)
 // Replace with Supabase data later
@@ -23,6 +24,18 @@ const mockOrders = [
 ];
 
 export default function Orders() {
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean;
+    orders: typeof mockOrders;
+    title: string;
+    restaurant: string;
+  }>({
+    isOpen: false,
+    orders: [],
+    title: "",
+    restaurant: ""
+  });
+
   // SEO
   useEffect(() => {
     document.title = "Orders Overview | 92 eats Admin";
@@ -35,6 +48,37 @@ export default function Orders() {
     }
     meta.setAttribute("content", desc);
   }, []);
+
+  const openModal = (restaurant: string, type: "total" | "success" | "canceled") => {
+    const restaurantOrders = mockOrders.filter(order => order.restaurant === restaurant);
+    let filteredOrders = restaurantOrders;
+    let title = "";
+
+    switch (type) {
+      case "total":
+        title = "All Orders";
+        break;
+      case "success":
+        filteredOrders = restaurantOrders.filter(order => order.status === "delivered");
+        title = "Successful Orders";
+        break;
+      case "canceled":
+        filteredOrders = restaurantOrders.filter(order => order.status === "canceled");
+        title = "Canceled Orders";
+        break;
+    }
+
+    setModalState({
+      isOpen: true,
+      orders: filteredOrders,
+      title,
+      restaurant
+    });
+  };
+
+  const closeModal = () => {
+    setModalState(prev => ({ ...prev, isOpen: false }));
+  };
 
   const summaries = useMemo(() => {
     const map: Record<string, { restaurant: string; total: number; success: number; canceled: number; canceledBy: string[] }>
@@ -80,7 +124,10 @@ export default function Orders() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="rounded-lg border border-border p-3">
+                  <div 
+                    className="rounded-lg border border-border p-3 cursor-pointer hover-scale transition-all duration-200"
+                    onClick={() => openModal(s.restaurant, "total")}
+                  >
                     <div className="flex items-center gap-2 text-muted-foreground text-sm">
                       <ShoppingBag className="w-4 h-4" />
                       <span>Total</span>
@@ -88,7 +135,10 @@ export default function Orders() {
                     <div className="mt-1 text-2xl font-semibold text-foreground">{s.total}</div>
                   </div>
 
-                  <div className="rounded-lg border border-border p-3">
+                  <div 
+                    className="rounded-lg border border-border p-3 cursor-pointer hover-scale transition-all duration-200"
+                    onClick={() => openModal(s.restaurant, "success")}
+                  >
                     <div className="flex items-center gap-2 text-muted-foreground text-sm">
                       <CheckCircle className="w-4 h-4 text-success" />
                       <span>Successful</span>
@@ -96,7 +146,10 @@ export default function Orders() {
                     <div className="mt-1 text-2xl font-semibold text-success">{s.success}</div>
                   </div>
 
-                  <div className="rounded-lg border border-border p-3">
+                  <div 
+                    className="rounded-lg border border-border p-3 cursor-pointer hover-scale transition-all duration-200"
+                    onClick={() => openModal(s.restaurant, "canceled")}
+                  >
                     <div className="flex items-center gap-2 text-muted-foreground text-sm">
                       <XCircle className="w-4 h-4 text-destructive" />
                       <span>Canceled</span>
@@ -123,6 +176,14 @@ export default function Orders() {
             </Card>
           ))}
         </section>
+        
+        <OrdersModal
+          isOpen={modalState.isOpen}
+          onClose={closeModal}
+          orders={modalState.orders}
+          title={modalState.title}
+          restaurant={modalState.restaurant}
+        />
       </div>
     </Layout>
   );
