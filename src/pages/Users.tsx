@@ -1,41 +1,155 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { Layout } from "@/components/admin/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Crown, Medal, ThumbsDown } from "lucide-react";
+import { User, PoundSterling, ShoppingBag, CheckCircle, XCircle } from "lucide-react";
+import { OrderInvoicesModal, OrderInvoice } from "@/components/admin/OrderInvoicesModal";
+import { InvoiceDetailModal } from "@/components/admin/InvoiceDetailModal";
 
-interface User {
+interface UserData {
   id: string;
   name: string;
-  restaurant: string;
+  email: string;
+  phone: string;
   totalOrders: number;
+  successfulOrders: number;
   canceledOrders: number;
+  totalSpent: number;
+  joinDate: string;
 }
 
-// Mock users data - replace with Supabase later
-const users: User[] = [
-  { id: "u1", name: "John Doe", restaurant: "Pizza Palace", totalOrders: 42, canceledOrders: 1 },
-  { id: "u2", name: "Mary Lee", restaurant: "Pizza Palace", totalOrders: 18, canceledOrders: 4 },
-  { id: "u3", name: "Mike Chen", restaurant: "Pizza Palace", totalOrders: 27, canceledOrders: 0 },
-
-  { id: "u4", name: "Jane Smith", restaurant: "Burger Hub", totalOrders: 36, canceledOrders: 2 },
-  { id: "u5", name: "Alex Carter", restaurant: "Burger Hub", totalOrders: 21, canceledOrders: 3 },
-  { id: "u6", name: "Priya Gupta", restaurant: "Burger Hub", totalOrders: 12, canceledOrders: 5 },
-
-  { id: "u7", name: "Liam Wong", restaurant: "Sushi Master", totalOrders: 29, canceledOrders: 1 },
-  { id: "u8", name: "Emma Brown", restaurant: "Sushi Master", totalOrders: 31, canceledOrders: 0 },
-
-  { id: "u9", name: "Carlos Diaz", restaurant: "Taco Fiesta", totalOrders: 16, canceledOrders: 3 },
-  { id: "u10", name: "Olivia Park", restaurant: "Taco Fiesta", totalOrders: 22, canceledOrders: 2 },
+// Mock users data with enhanced details
+const mockUsers: UserData[] = [
+  {
+    id: "u1",
+    name: "John Doe",
+    email: "john.doe@email.com",
+    phone: "+44 7700 900123",
+    totalOrders: 42,
+    successfulOrders: 40,
+    canceledOrders: 2,
+    totalSpent: 1245.80,
+    joinDate: "Jan 2024"
+  },
+  {
+    id: "u2",
+    name: "Mary Lee",
+    email: "mary.lee@email.com",
+    phone: "+44 7700 900124",
+    totalOrders: 28,
+    successfulOrders: 24,
+    canceledOrders: 4,
+    totalSpent: 890.50,
+    joinDate: "Feb 2024"
+  },
+  {
+    id: "u3",
+    name: "Mike Chen",
+    email: "mike.chen@email.com",
+    phone: "+44 7700 900125",
+    totalOrders: 35,
+    successfulOrders: 35,
+    canceledOrders: 0,
+    totalSpent: 1567.25,
+    joinDate: "Jan 2024"
+  },
+  {
+    id: "u4",
+    name: "Jane Smith",
+    email: "jane.smith@email.com",
+    phone: "+44 7700 900126",
+    totalOrders: 19,
+    successfulOrders: 17,
+    canceledOrders: 2,
+    totalSpent: 678.90,
+    joinDate: "Mar 2024"
+  },
+  {
+    id: "u5",
+    name: "Alex Carter",
+    email: "alex.carter@email.com",
+    phone: "+44 7700 900127",
+    totalOrders: 51,
+    successfulOrders: 48,
+    canceledOrders: 3,
+    totalSpent: 2103.45,
+    joinDate: "Dec 2023"
+  },
+  {
+    id: "u6",
+    name: "Emma Brown",
+    email: "emma.brown@email.com",
+    phone: "+44 7700 900128",
+    totalOrders: 33,
+    successfulOrders: 31,
+    canceledOrders: 2,
+    totalSpent: 1234.75,
+    joinDate: "Feb 2024"
+  }
 ];
 
-const CANCEL_THRESHOLD = 3;
+// Mock order invoices data
+const mockOrderInvoices: Record<string, OrderInvoice[]> = {
+  "u1": [
+    {
+      id: "ORD-001",
+      restaurant: "Pizza Palace",
+      items: [
+        { name: "Margherita Pizza", quantity: 1, price: 12.99 },
+        { name: "Garlic Bread", quantity: 2, price: 4.50 }
+      ],
+      totalAmount: 21.99,
+      orderDate: "2024-03-15",
+      deliveryTime: "2024-03-15 19:30",
+      status: "delivered",
+      paymentMethod: "Online",
+      orderType: "Delivery",
+      deliveryAddress: "123 Main Street, London, SW1A 1AA"
+    },
+    {
+      id: "ORD-002",
+      restaurant: "Burger Hub",
+      items: [
+        { name: "Classic Burger", quantity: 2, price: 8.99 },
+        { name: "French Fries", quantity: 1, price: 3.50 }
+      ],
+      totalAmount: 21.48,
+      orderDate: "2024-03-10",
+      deliveryTime: "2024-03-10 20:15",
+      status: "delivered",
+      paymentMethod: "COD",
+      orderType: "Delivery",
+      deliveryAddress: "123 Main Street, London, SW1A 1AA"
+    }
+  ],
+  "u2": [
+    {
+      id: "ORD-003",
+      restaurant: "Sushi Master",
+      items: [
+        { name: "California Roll", quantity: 2, price: 9.99 },
+        { name: "Miso Soup", quantity: 1, price: 3.50 }
+      ],
+      totalAmount: 23.48,
+      orderDate: "2024-03-14",
+      deliveryTime: "2024-03-14 18:45",
+      status: "delivered",
+      paymentMethod: "Online",
+      orderType: "Takeaway"
+    }
+  ]
+};
 
 export default function Users() {
+  const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<OrderInvoice | null>(null);
+  const [isOrdersModalOpen, setIsOrdersModalOpen] = useState(false);
+  const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
+
   // SEO
   useEffect(() => {
-    document.title = "Users Leaderboard | 92 eats Admin";
-    const desc = "Top users by restaurant, high cancellation users, and global gold/silver/bronze leaderboard.";
+    document.title = "Users Management | 92 eats Admin";
+    const desc = "Manage users, view order statistics, and track customer spending on the 92 eats platform.";
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) {
       meta = document.createElement("meta");
@@ -45,151 +159,118 @@ export default function Users() {
     meta.setAttribute("content", desc);
   }, []);
 
-  const leaderboard = useMemo(() => {
-    const sorted = [...users].sort((a, b) => b.totalOrders - a.totalOrders);
-    return {
-      gold: sorted[0],
-      silver: sorted[1],
-      bronze: sorted[2],
-    };
-  }, []);
+  const handleUserClick = (user: UserData) => {
+    setSelectedUser(user);
+    setIsOrdersModalOpen(true);
+  };
 
-  const perRestaurant = useMemo(() => {
-    const map: Record<string, { topUser: User | null; highCancelers: User[] }> = {};
-    for (const u of users) {
-      if (!map[u.restaurant]) map[u.restaurant] = { topUser: null, highCancelers: [] };
-      const r = map[u.restaurant];
-      // top user by total orders
-      if (!r.topUser || u.totalOrders > r.topUser.totalOrders) r.topUser = u;
-      // high cancelers list
-      if (u.canceledOrders >= CANCEL_THRESHOLD) r.highCancelers.push(u);
-    }
-    return Object.entries(map).map(([restaurant, data]) => ({ restaurant, ...data }));
-  }, []);
+  const handleViewInvoice = (order: OrderInvoice) => {
+    setSelectedOrder(order);
+    setIsInvoiceModalOpen(true);
+  };
+
+  const closeOrdersModal = () => {
+    setIsOrdersModalOpen(false);
+    setSelectedUser(null);
+  };
+
+  const closeInvoiceModal = () => {
+    setIsInvoiceModalOpen(false);
+    setSelectedOrder(null);
+  };
 
   return (
     <Layout>
-      <div className="space-y-8">
+      <div className="space-y-6">
         <header>
-          <h1 className="text-3xl font-bold text-foreground">Users</h1>
-          <p className="text-muted-foreground">Top users from each restaurant and overall leaderboard</p>
+          <h1 className="text-3xl font-bold text-foreground">Users Management</h1>
+          <p className="text-muted-foreground">View user profiles, order statistics, and spending analytics</p>
         </header>
 
-        {/* Global Leaderboard */}
-        <section>
-          <h2 className="sr-only">Leaderboard</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Gold */}
-            <Card className="hover:shadow-elegant transition-all duration-300 border-l-4 border-l-yellow-500 bg-gradient-to-r from-yellow-50/50 to-transparent">
+        <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {mockUsers.map((user) => (
+            <Card 
+              key={user.id} 
+              className="cursor-pointer card-hover border-border/50"
+              onClick={() => handleUserClick(user)}
+            >
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-yellow-500/10">
-                    <Crown className="w-4 h-4 text-yellow-600" />
-                  </span>
-                  <span className="sr-only">Gold Tier</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {leaderboard.gold ? (
-                  <div className="space-y-1">
-                    <p className="text-lg font-semibold text-foreground">{leaderboard.gold.name}</p>
-                    <p className="text-sm text-muted-foreground">Total Orders: {leaderboard.gold.totalOrders}</p>
+                <CardTitle className="flex items-center gap-3">
+                  <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gradient-primary">
+                    <User className="w-5 h-5 text-white" />
                   </div>
-                ) : (
-                  <p className="text-sm text-muted-foreground">No data</p>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Silver */}
-            <Card className="hover:shadow-elegant transition-all duration-300 border-l-4 border-l-gray-400 bg-gradient-to-r from-gray-50/50 to-transparent">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-gray-400/10">
-                    <Medal className="w-4 h-4 text-gray-500" />
-                  </span>
-                  <span className="sr-only">Silver Tier</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {leaderboard.silver ? (
-                  <div className="space-y-1">
-                    <p className="text-lg font-semibold text-foreground">{leaderboard.silver.name}</p>
-                    <p className="text-sm text-muted-foreground">Total Orders: {leaderboard.silver.totalOrders}</p>
-                  </div>
-                ) : (
-                  <p className="text-sm text-muted-foreground">No data</p>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Bronze */}
-            <Card className="hover:shadow-elegant transition-all duration-300 border-l-4 border-l-amber-600 bg-gradient-to-r from-amber-50/50 to-transparent">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <span className="inline-flex w-8 h-8 items-center justify-center rounded-lg bg-amber-600/10">
-                    <Medal className="w-4 h-4 text-amber-700" />
-                  </span>
-                  <span className="sr-only">Bronze Tier</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {leaderboard.bronze ? (
-                  <div className="space-y-1">
-                    <p className="text-lg font-semibold text-foreground">{leaderboard.bronze.name}</p>
-                    <p className="text-sm text-muted-foreground">Total Orders: {leaderboard.bronze.totalOrders}</p>
-                  </div>
-                ) : (
-                  <p className="text-sm text-muted-foreground">No data</p>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
-        {/* Top users per restaurant */}
-        <section className="space-y-4">
-          <h2 className="text-xl font-semibold text-foreground">Top users from each restaurant</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {perRestaurant.map(({ restaurant, topUser, highCancelers }) => (
-              <Card key={restaurant} className="hover:shadow-elegant transition-all duration-300">
-                <CardHeader>
-                  <CardTitle>{restaurant}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="rounded-lg border border-border p-3">
-                    <p className="text-sm text-muted-foreground">Top User</p>
-                    {topUser ? (
-                      <div className="mt-1">
-                        <p className="font-semibold text-foreground">{topUser.name}</p>
-                        <p className="text-sm text-muted-foreground">Total Orders: {topUser.totalOrders}</p>
-                      </div>
-                    ) : (
-                      <p className="text-sm text-muted-foreground">No data</p>
-                    )}
-                  </div>
-
                   <div>
-                    <p className="text-sm text-muted-foreground mb-2 flex items-center gap-2">
-                      <ThumbsDown className="w-4 h-4" /> High cancellations (≥ {CANCEL_THRESHOLD})
-                    </p>
-                    {highCancelers.length ? (
-                      <div className="flex flex-wrap gap-2">
-                        {highCancelers.map((u) => (
-                          <Badge key={u.id} variant="outline" className="bg-destructive/10 text-destructive border-destructive/20">
-                            {u.name} • {u.canceledOrders}
-                          </Badge>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="text-sm text-muted-foreground">None</p>
-                    )}
+                    <h3 className="font-semibold text-foreground">{user.name}</h3>
+                    <p className="text-sm text-muted-foreground font-normal">Member since {user.joinDate}</p>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">{user.email}</p>
+                  <p className="text-sm text-muted-foreground">{user.phone}</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-lg border border-border p-3 bg-muted/20">
+                    <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
+                      <ShoppingBag className="w-3 h-3" />
+                      <span>Total Orders</span>
+                    </div>
+                    <div className="text-xl font-semibold text-foreground">{user.totalOrders}</div>
+                  </div>
+
+                  <div className="rounded-lg border border-border p-3 bg-muted/20">
+                    <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
+                      <PoundSterling className="w-3 h-3" />
+                      <span>Total Spent</span>
+                    </div>
+                    <div className="text-xl font-semibold text-foreground">£{user.totalSpent.toFixed(0)}</div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-lg border border-success/20 p-3 bg-success/5">
+                    <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
+                      <CheckCircle className="w-3 h-3 text-success" />
+                      <span>Successful</span>
+                    </div>
+                    <div className="text-lg font-semibold text-success">{user.successfulOrders}</div>
+                  </div>
+
+                  <div className="rounded-lg border border-destructive/20 p-3 bg-destructive/5">
+                    <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
+                      <XCircle className="w-3 h-3 text-destructive" />
+                      <span>Canceled</span>
+                    </div>
+                    <div className="text-lg font-semibold text-destructive">{user.canceledOrders}</div>
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                    Click to view order history
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </section>
+
+        <OrderInvoicesModal
+          isOpen={isOrdersModalOpen}
+          onClose={closeOrdersModal}
+          userName={selectedUser?.name || ""}
+          orders={selectedUser ? mockOrderInvoices[selectedUser.id] || [] : []}
+          onViewInvoice={handleViewInvoice}
+        />
+
+        <InvoiceDetailModal
+          isOpen={isInvoiceModalOpen}
+          onClose={closeInvoiceModal}
+          order={selectedOrder}
+          userName={selectedUser?.name || ""}
+        />
       </div>
     </Layout>
   );
