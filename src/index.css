@@ -155,7 +155,7 @@ All colors MUST be HSL. Inspired by vibrant food delivery apps.
   }
   
   .hover-bg-smooth {
-    @apply transition-colors duration-300 ease-out hover:bg-accent/20;
+    @apply transition-colors duration-300 ease-out hover:bg-muted/50;
   }
   
   .hover-text-smooth {
@@ -175,4 +175,19 @@ All colors MUST be HSL. Inspired by vibrant food delivery apps.
   .card-hover {
     @apply transition-all duration-300 ease-out hover:shadow-elegant hover:border-primary/20 hover:-translate-y-1;
   }
+  
+  /* Clickable stat cards */
+  .stat-card-clickable {
+    @apply cursor-pointer transition-all duration-200 ease-out hover:scale-[1.02] hover:shadow-md hover:border-primary/30 active:scale-[0.98];
+  }
+  
+  /* Success state styling */
+  .success-card {
+    @apply bg-success/5 border-success/20 hover:bg-success/10;
+  }
+  
+  .success-text {
+    @apply text-success font-semibold;
+  }
+}
 }

@@ -125,7 +125,7 @@ export default function Orders() {
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-3 gap-3">
                   <div 
-                    className="rounded-lg border border-border p-3 cursor-pointer hover-scale transition-all duration-200"
+                    className="rounded-lg border border-border p-3 stat-card-clickable"
                     onClick={() => openModal(s.restaurant, "total")}
                   >
                     <div className="flex items-center gap-2 text-muted-foreground text-sm">
@@ -136,18 +136,18 @@ export default function Orders() {
                   </div>
 
                   <div 
-                    className="rounded-lg border border-border p-3 cursor-pointer hover-scale transition-all duration-200"
+                    className="rounded-lg border border-border p-3 stat-card-clickable success-card"
                     onClick={() => openModal(s.restaurant, "success")}
                   >
                     <div className="flex items-center gap-2 text-muted-foreground text-sm">
                       <CheckCircle className="w-4 h-4 text-success" />
                       <span>Successful</span>
                     </div>
-                    <div className="mt-1 text-2xl font-semibold text-success">{s.success}</div>
+                    <div className="mt-1 text-2xl font-semibold success-text">{s.success}</div>
                   </div>
 
                   <div 
-                    className="rounded-lg border border-border p-3 cursor-pointer hover-scale transition-all duration-200"
+                    className="rounded-lg border border-border p-3 stat-card-clickable bg-destructive/5 border-destructive/20 hover:bg-destructive/10"
                     onClick={() => openModal(s.restaurant, "canceled")}
                   >
                     <div className="flex items-center gap-2 text-muted-foreground text-sm">
