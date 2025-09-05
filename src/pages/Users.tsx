@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Layout } from "@/components/admin/Layout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { User, PoundSterling, ShoppingBag, CheckCircle, XCircle } from "lucide-react";
 import { OrderInvoicesModal, OrderInvoice } from "@/components/admin/OrderInvoicesModal";
 import { InvoiceDetailModal } from "@/components/admin/InvoiceDetailModal";
@@ -187,74 +187,75 @@ export default function Users() {
           <p className="text-muted-foreground">View user profiles, order statistics, and spending analytics</p>
         </header>
 
-        <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {mockUsers.map((user) => (
-            <Card 
-              key={user.id} 
-              className="cursor-pointer card-hover border-border/50"
-              onClick={() => handleUserClick(user)}
-            >
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3">
-                  <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gradient-primary">
-                    <User className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground">{user.name}</h3>
-                    <p className="text-sm text-muted-foreground font-normal">Member since {user.joinDate}</p>
-                  </div>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <p className="text-sm text-muted-foreground">{user.email}</p>
-                  <p className="text-sm text-muted-foreground">{user.phone}</p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-lg border border-border p-3 bg-muted/20">
-                    <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
-                      <ShoppingBag className="w-3 h-3" />
-                      <span>Total Orders</span>
+        <section className="rounded-md border border-border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>User</TableHead>
+                <TableHead>Contact</TableHead>
+                <TableHead className="text-center">Total Orders</TableHead>
+                <TableHead className="text-center">Successful</TableHead>
+                <TableHead className="text-center">Canceled</TableHead>
+                <TableHead className="text-right">Total Spent</TableHead>
+                <TableHead className="text-center">Member Since</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {mockUsers.map((user) => (
+                <TableRow 
+                  key={user.id} 
+                  className="cursor-pointer hover:bg-muted/50"
+                  onClick={() => handleUserClick(user)}
+                >
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gradient-primary">
+                        <User className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <div className="font-medium text-foreground">{user.name}</div>
+                      </div>
                     </div>
-                    <div className="text-xl font-semibold text-foreground">{user.totalOrders}</div>
-                  </div>
-
-                  <div className="rounded-lg border border-border p-3 bg-muted/20">
-                    <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
-                      <PoundSterling className="w-3 h-3" />
-                      <span>Total Spent</span>
+                  </TableCell>
+                  <TableCell>
+                    <div className="space-y-1">
+                      <div className="text-sm text-foreground">{user.email}</div>
+                      <div className="text-xs text-muted-foreground">{user.phone}</div>
                     </div>
-                    <div className="text-xl font-semibold text-foreground">£{user.totalSpent.toFixed(0)}</div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-lg border border-success/20 p-3 bg-success/5">
-                    <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
-                      <CheckCircle className="w-3 h-3 text-success" />
-                      <span>Successful</span>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex items-center justify-center gap-1">
+                      <ShoppingBag className="w-4 h-4 text-muted-foreground" />
+                      <span className="font-medium">{user.totalOrders}</span>
                     </div>
-                    <div className="text-lg font-semibold text-success">{user.successfulOrders}</div>
-                  </div>
-
-                  <div className="rounded-lg border border-destructive/20 p-3 bg-destructive/5">
-                    <div className="flex items-center gap-2 text-muted-foreground text-xs mb-1">
-                      <XCircle className="w-3 h-3 text-destructive" />
-                      <span>Canceled</span>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex items-center justify-center gap-1">
+                      <CheckCircle className="w-4 h-4 text-success" />
+                      <span className="font-medium text-success">{user.successfulOrders}</span>
                     </div>
-                    <div className="text-lg font-semibold text-destructive">{user.canceledOrders}</div>
-                  </div>
-                </div>
-
-                <div className="pt-2">
-                  <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
-                    Click to view order history
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex items-center justify-center gap-1">
+                      <XCircle className="w-4 h-4 text-destructive" />
+                      <span className="font-medium text-destructive">{user.canceledOrders}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-1">
+                      <PoundSterling className="w-4 h-4 text-muted-foreground" />
+                      <span className="font-medium text-foreground">{user.totalSpent.toFixed(2)}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                      {user.joinDate}
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </section>
 
         <OrderInvoicesModal

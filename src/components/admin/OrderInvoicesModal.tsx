@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { PoundSterling, Clock, MapPin, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -57,7 +58,7 @@ export function OrderInvoicesModal({ isOpen, onClose, userName, orders, onViewIn
           </DialogTitle>
         </DialogHeader>
         
-        <div className="overflow-auto">
+        <ScrollArea className="h-[70vh] w-full">
           {orders.length > 0 ? (
             <Table>
               <TableHeader>
@@ -148,7 +149,7 @@ export function OrderInvoicesModal({ isOpen, onClose, userName, orders, onViewIn
               <p>No orders found for this user</p>
             </div>
           )}
-        </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
