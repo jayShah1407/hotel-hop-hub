@@ -5,6 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 import { Search, Plus, Filter, Calendar, Star, MapPin } from "lucide-react";
 
 // Mock data - replace with Supabase data
@@ -78,11 +83,27 @@ const mockRestaurants = [
 ];
 
 export default function Restaurants() {
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [selectedCuisine, setSelectedCuisine] = useState("all");
   const [minRating, setMinRating] = useState(0);
   const [restaurants, setRestaurants] = useState(mockRestaurants);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Form data for new restaurant
+  const [formData, setFormData] = useState({
+    name: "",
+    cuisine: "",
+    phone: "",
+    email: "",
+    address: "",
+    city: "",
+    fssaiNumber: "",
+    gstNumber: "",
+    description: ""
+  });
 
   const handleStatusChange = (id: string, newStatus: "active" | "inactive" | "pending") => {
     setRestaurants(prev => 
@@ -92,6 +113,73 @@ export default function Restaurants() {
           : restaurant
       )
     );
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleSubmit = async () => {
+    if (!formData.name || !formData.cuisine || !formData.phone || !formData.email) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const newRestaurant = {
+        id: Date.now().toString(),
+        name: formData.name,
+        cuisine: formData.cuisine,
+        rating: 0,
+        location: formData.city,
+        status: "pending" as const,
+        orders: 0,
+        revenue: "£0",
+        image: "/placeholder.svg"
+      };
+      
+      setRestaurants(prev => [newRestaurant, ...prev]);
+      
+      toast({
+        title: "Restaurant Added Successfully!",
+        description: `${formData.name} has been registered and is pending approval.`,
+      });
+      
+      // Reset form and close dialog
+      setFormData({
+        name: "",
+        cuisine: "",
+        phone: "",
+        email: "",
+        address: "",
+        city: "",
+        fssaiNumber: "",
+        gstNumber: "",
+        description: ""
+      });
+      setIsDialogOpen(false);
+      
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add restaurant. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const filteredRestaurants = restaurants.filter(restaurant => {
@@ -114,10 +202,155 @@ export default function Restaurants() {
             <h1 className="text-3xl font-bold text-foreground">Restaurants</h1>
             <p className="text-muted-foreground">Manage restaurant partners and their menus</p>
           </div>
-          <Button className="bg-gradient-primary hover:opacity-90 btn-interactive">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Restaurant
-          </Button>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-gradient-primary hover:opacity-90 btn-interactive">
+                <Plus className="w-4 h-4 mr-2" />
+                Add Restaurant
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px]">
+              <DialogHeader>
+                <DialogTitle>Register New Restaurant</DialogTitle>
+                <DialogDescription>
+                  Add a new restaurant to the platform. Fill in the required information below.
+                </DialogDescription>
+              </DialogHeader>
+              
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Restaurant Name *</Label>
+                    <Input
+                      id="name"
+                      value={formData.name}
+                      onChange={(e) => handleInputChange("name", e.target.value)}
+                      placeholder="Enter restaurant name"
+                      className="hover-border-smooth"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="cuisine">Cuisine Type *</Label>
+                    <Select value={formData.cuisine} onValueChange={(value) => handleInputChange("cuisine", value)}>
+                      <SelectTrigger className="hover-border-smooth">
+                        <SelectValue placeholder="Select cuisine" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Indian">Indian</SelectItem>
+                        <SelectItem value="Chinese">Chinese</SelectItem>
+                        <SelectItem value="Italian">Italian</SelectItem>
+                        <SelectItem value="Mexican">Mexican</SelectItem>
+                        <SelectItem value="American">American</SelectItem>
+                        <SelectItem value="Japanese">Japanese</SelectItem>
+                        <SelectItem value="Thai">Thai</SelectItem>
+                        <SelectItem value="Mediterranean">Mediterranean</SelectItem>
+                        <SelectItem value="Continental">Continental</SelectItem>
+                        <SelectItem value="Fast Food">Fast Food</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="phone">Phone Number *</Label>
+                    <Input
+                      id="phone"
+                      value={formData.phone}
+                      onChange={(e) => handleInputChange("phone", e.target.value)}
+                      placeholder="+91 9876543210"
+                      className="hover-border-smooth"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email Address *</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange("email", e.target.value)}
+                      placeholder="restaurant@example.com"
+                      className="hover-border-smooth"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="address">Address</Label>
+                  <Input
+                    id="address"
+                    value={formData.address}
+                    onChange={(e) => handleInputChange("address", e.target.value)}
+                    placeholder="Enter restaurant address"
+                    className="hover-border-smooth"
+                  />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="city">City</Label>
+                    <Input
+                      id="city"
+                      value={formData.city}
+                      onChange={(e) => handleInputChange("city", e.target.value)}
+                      placeholder="Enter city"
+                      className="hover-border-smooth"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="fssaiNumber">FSSAI Number</Label>
+                    <Input
+                      id="fssaiNumber"
+                      value={formData.fssaiNumber}
+                      onChange={(e) => handleInputChange("fssaiNumber", e.target.value)}
+                      placeholder="12345678901234"
+                      className="hover-border-smooth"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="gstNumber">GST Number</Label>
+                  <Input
+                    id="gstNumber"
+                    value={formData.gstNumber}
+                    onChange={(e) => handleInputChange("gstNumber", e.target.value)}
+                    placeholder="22AAAAA0000A1Z5"
+                    className="hover-border-smooth"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea
+                    id="description"
+                    value={formData.description}
+                    onChange={(e) => handleInputChange("description", e.target.value)}
+                    placeholder="Brief description of the restaurant"
+                    rows={3}
+                    className="hover-border-smooth"
+                  />
+                </div>
+              </div>
+              
+              <DialogFooter>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setIsDialogOpen(false)}
+                  disabled={isSubmitting}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  className="bg-gradient-primary hover:opacity-90"
+                >
+                  {isSubmitting ? "Adding..." : "Add Restaurant"}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Filters */}
