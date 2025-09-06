@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Lock, User, ShieldCheck } from "lucide-react";
+import { Lock, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Logo92Eats } from "@/components/ui/Logo92Eats";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -51,12 +52,12 @@ export default function AdminLogin() {
       <div className="w-full max-w-md">
         <Card className="shadow-elegant border-border/50">
           <CardHeader className="space-y-4 text-center">
-            <div className="mx-auto w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center shadow-glow">
-              <ShieldCheck className="w-8 h-8 text-white" />
+            <div className="mx-auto flex items-center justify-center">
+              <Logo92Eats size={64} />
             </div>
             <div>
               <CardTitle className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                Admin Access
+                92 Eats Admin
               </CardTitle>
               <CardDescription className="text-muted-foreground mt-2">
                 Enter your admin credentials to access the dashboard

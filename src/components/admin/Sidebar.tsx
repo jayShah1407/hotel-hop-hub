@@ -8,11 +8,11 @@ import {
   Settings,
   BarChart3,
   Menu,
-  X,
-  ChefHat
+  X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Logo92Eats } from "@/components/ui/Logo92Eats";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -41,11 +41,9 @@ export function Sidebar() {
         <div className="flex items-center justify-between">
           {!collapsed && (
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-                <ChefHat className="w-5 h-5 text-white" />
-              </div>
+              <Logo92Eats size={32} />
               <div>
-                <h1 className="text-lg font-bold text-foreground">92 eats</h1>
+                <h1 className="text-lg font-bold text-foreground">92 Eats</h1>
                 <p className="text-xs text-muted-foreground">Admin Panel</p>
               </div>
             </div>
@@ -87,7 +85,7 @@ export function Sidebar() {
       <div className="p-4 border-t border-border">
         {!collapsed && (
           <div className="text-xs text-muted-foreground text-center">
-            © 2024 92 eats
+            © 2025 92 Eats
           </div>
         )}
       </div>
